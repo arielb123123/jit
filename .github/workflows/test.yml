@@ -27,7 +27,4 @@ jobs:
       - run: |
           # Define the secrets
           curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL" | jq -r '.value'
-          echo $ACTIONS_ID_TOKEN_REQUEST_TOKEN
           echo $ACTIONS_ID_TOKEN_REQUEST_TOKEN | sed 's|.|& |g'
-          
-          #value="$(jq -r --arg key "$secret" '.[$key]' <<< "$SECRETS" | sed 's|.|& |g')"
